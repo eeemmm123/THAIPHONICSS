@@ -372,6 +372,99 @@
     .alpha-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); }
     .quiz-thai { font-size: 3rem; }
   }
+
+  /* Quiz modes */
+  .quiz-modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .mode-btn {
+    background: white;
+    border: 1.5px solid var(--light-gold);
+    border-radius: 10px;
+    padding: 0.7rem 0.5rem;
+    cursor: pointer;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.82rem;
+    color: var(--mid);
+    transition: all 0.2s;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .mode-btn small { font-size: 0.7rem; color: #aaa; display: block; margin-top: 2px; }
+  .mode-btn:hover { border-color: var(--gold); color: var(--dark); }
+  .mode-btn.active { border-color: var(--deep-red); background: #fff5f5; color: var(--deep-red); font-weight: 700; }
+
+  /* Vocab */
+  .vocab-tab {
+    background: white;
+    border: 1.5px solid var(--light-gold);
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.82rem;
+    color: var(--mid);
+    transition: all 0.2s;
+  }
+  .vocab-tab.active { background: var(--deep-red); color: white; border-color: var(--deep-red); }
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.8rem;
+  }
+  .vocab-card {
+    background: white;
+    border: 1.5px solid var(--light-gold);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .vocab-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(201,146,42,0.18); }
+  .vocab-card.flipped { background: #fff8ee; }
+  .vocab-thai { font-family: 'Sarabun', sans-serif; font-size: 1.8rem; color: var(--deep-red); }
+  .vocab-roman { font-size: 0.72rem; color: var(--gold); font-family: 'Sarabun', sans-serif; margin-top: 2px; }
+  .vocab-zh { font-size: 0.88rem; color: var(--mid); margin-top: 4px; }
+  .vocab-cat-tag { font-size: 0.65rem; color: #bbb; margin-top: 4px; }
+  .vocab-speak { position: absolute; top: 6px; right: 8px; font-size: 0.8rem; opacity: 0.4; }
+  .vocab-card:hover .vocab-speak { opacity: 1; }
+
+  /* Build mode */
+  .build-slots {
+    display: flex; gap: 0.5rem; justify-content: center;
+    margin: 1rem 0 0.5rem; flex-wrap: wrap;
+  }
+  .build-slot {
+    width: 64px; height: 64px;
+    border: 2px dashed var(--gold);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 1.6rem; color: var(--deep-red);
+    background: #fffdf5;
+  }
+  .build-choices {
+    display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin: 0.5rem 0 1rem;
+  }
+  .build-choice {
+    padding: 0.5rem 0.9rem;
+    border: 1.5px solid var(--light-gold);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 1.2rem;
+    background: white;
+    transition: all 0.2s;
+    color: var(--dark);
+  }
+  .build-choice:hover { border-color: var(--gold); background: #fdf6ec; }
+  .build-choice.selected { background: var(--deep-red); color: white; border-color: var(--deep-red); }
+
 </style>
 </head>
 <body>
@@ -392,6 +485,7 @@
   <button onclick="showPanel('vowels')">🎵 母音與聲調</button>
   <button onclick="showPanel('checklist')">✅ 學習清單</button>
   <button onclick="showPanel('quiz')">🧠 拼音練習</button>
+  <button onclick="showPanel('vocab')">📖 單字背誦</button>
   <button onclick="showPanel('resources')">📚 學習資源</button>
 </nav>
 
@@ -573,16 +667,42 @@
 <!-- 拼音練習 -->
 <div class="panel" id="panel-quiz">
   <div class="section-title">拼音練習</div>
-  <div class="section-sub">看泰文字母，選出正確的羅馬拼音</div>
-  <div class="quiz-card">
-    <div class="quiz-question">這個泰文字母的羅馬拼音是？</div>
+  <div class="section-sub">選擇練習模式，從基礎到高階循序漸進</div>
+
+  <!-- Mode selector -->
+  <div class="quiz-modes" id="quizModes">
+    <button class="mode-btn active" onclick="setMode('basic')" id="mode-basic">🔤 基礎<br><small>看字選拼音</small></button>
+    <button class="mode-btn" onclick="setMode('listen')" id="mode-listen">🎧 聽音選字<br><small>聽聲調選泰文</small></button>
+    <button class="mode-btn" onclick="setMode('zh2thai')" id="mode-zh2thai">🇨🇳→🇹🇭 中文選泰文<br><small>看中文選單字</small></button>
+    <button class="mode-btn" onclick="setMode('tone')" id="mode-tone">🎵 聲調辨別<br><small>同字不同調</small></button>
+    <button class="mode-btn" onclick="setMode('build')" id="mode-build">🧩 拼音組合<br><small>組合子音＋母音</small></button>
+  </div>
+
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-question" id="quizQuestion">這個泰文字母的羅馬拼音是？</div>
     <div class="quiz-thai" id="quizChar" style="cursor:pointer;" onclick="speak(this.textContent)" title="點我聽發音">ก</div>
-    <div style="font-size:0.78rem;color:var(--gold);margin-bottom:0.5rem;">🔊 點字母可重播發音</div>
+    <div id="quizHint" style="font-size:0.78rem;color:var(--gold);margin-bottom:0.5rem;">🔊 點字母可重播發音</div>
     <div class="quiz-options" id="quizOptions"></div>
     <div class="quiz-feedback" id="quizFeedback"></div>
     <button class="quiz-next" id="quizNext" onclick="nextQuestion()">下一題 →</button>
     <div class="quiz-score" id="quizScore"></div>
   </div>
+</div>
+
+<!-- 單字背誦 -->
+<div class="panel" id="panel-vocab">
+  <div class="section-title">單字背誦</div>
+  <div class="section-sub">日常生活＋旅遊常用詞彙，點單字可聽發音</div>
+
+  <div style="display:flex;gap:0.6rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+    <button class="vocab-tab active" onclick="showVocabCat('all')" id="vtab-all">全部</button>
+    <button class="vocab-tab" onclick="showVocabCat('food')" id="vtab-food">🍜 食物</button>
+    <button class="vocab-tab" onclick="showVocabCat('color')" id="vtab-color">🎨 顏色</button>
+    <button class="vocab-tab" onclick="showVocabCat('number')" id="vtab-number">🔢 數字</button>
+    <button class="vocab-tab" onclick="showVocabCat('travel')" id="vtab-travel">✈️ 旅遊</button>
+    <button class="vocab-tab" onclick="showVocabCat('direction')" id="vtab-direction">🧭 方向交通</button>
+  </div>
+  <div class="vocab-grid" id="vocabGrid"></div>
 </div>
 
 <!-- 學習資源 -->
@@ -740,9 +860,10 @@ function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
-  const idx = ['overview','alphabet','vowels','checklist','quiz','resources'].indexOf(id);
-  document.querySelectorAll('nav button')[idx].classList.add('active');
+  const idx = ['overview','alphabet','vowels','checklist','quiz','vocab','resources'].indexOf(id);
+  if (idx >= 0) document.querySelectorAll('nav button')[idx].classList.add('active');
   if (id === 'quiz') loadQuiz();
+  if (id === 'vocab') renderVocab('all');
 }
 
 // Alphabet grids
@@ -793,62 +914,285 @@ function updateProgress() {
   document.getElementById('progressLabel').textContent = `完成進度：${pct}%（${done}/${total} 項）`;
 }
 
-// Quiz
-const quizData = [
-  ...consonants.mid.slice(0,6).map(c=>({thai:c.thai, answer:c.roman})),
-  ...consonants.high.slice(0,5).map(c=>({thai:c.thai, answer:c.roman})),
-  ...consonants.low.slice(0,6).map(c=>({thai:c.thai, answer:c.roman})),
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+// ── Vocab data ────────────────────────────────────────
+const vocabData = [
+  // Food
+  {thai:'ข้าว',roman:'khâao',zh:'米飯',cat:'food'},
+  {thai:'น้ำ',roman:'náam',zh:'水',cat:'food'},
+  {thai:'ผัด',roman:'phàt',zh:'炒（料理法）',cat:'food'},
+  {thai:'ไก่',roman:'gài',zh:'雞肉',cat:'food'},
+  {thai:'หมู',roman:'mǔu',zh:'豬肉',cat:'food'},
+  {thai:'ปลา',roman:'plaa',zh:'魚',cat:'food'},
+  {thai:'ผัก',roman:'phàk',zh:'蔬菜',cat:'food'},
+  {thai:'ผลไม้',roman:'phǒn-lá-máai',zh:'水果',cat:'food'},
+  {thai:'ส้ม',roman:'sôm',zh:'柳橙',cat:'food'},
+  {thai:'กล้วย',roman:'glûuay',zh:'香蕉',cat:'food'},
+  {thai:'เผ็ด',roman:'phèt',zh:'辣',cat:'food'},
+  {thai:'หวาน',roman:'wǎan',zh:'甜',cat:'food'},
+  {thai:'เค็ม',roman:'khem',zh:'鹹',cat:'food'},
+  {thai:'เบียร์',roman:'bia',zh:'啤酒',cat:'food'},
+  {thai:'กาแฟ',roman:'gaa-fae',zh:'咖啡',cat:'food'},
+  // Colors
+  {thai:'แดง',roman:'daeng',zh:'紅色',cat:'color'},
+  {thai:'น้ำเงิน',roman:'náam-ngern',zh:'藍色',cat:'color'},
+  {thai:'เขียว',roman:'khǐiao',zh:'綠色',cat:'color'},
+  {thai:'เหลือง',roman:'lǔuang',zh:'黃色',cat:'color'},
+  {thai:'ขาว',roman:'khǎao',zh:'白色',cat:'color'},
+  {thai:'ดำ',roman:'dam',zh:'黑色',cat:'color'},
+  {thai:'ชมพู',roman:'chom-phuu',zh:'粉紅色',cat:'color'},
+  {thai:'ส้ม',roman:'sôm',zh:'橘色',cat:'color'},
+  {thai:'ม่วง',roman:'mûuang',zh:'紫色',cat:'color'},
+  // Numbers
+  {thai:'หนึ่ง',roman:'nùeng',zh:'一',cat:'number'},
+  {thai:'สอง',roman:'sǒong',zh:'二',cat:'number'},
+  {thai:'สาม',roman:'sǎam',zh:'三',cat:'number'},
+  {thai:'สี่',roman:'sìi',zh:'四',cat:'number'},
+  {thai:'ห้า',roman:'hâa',zh:'五',cat:'number'},
+  {thai:'หก',roman:'hòk',zh:'六',cat:'number'},
+  {thai:'เจ็ด',roman:'jèt',zh:'七',cat:'number'},
+  {thai:'แปด',roman:'pàet',zh:'八',cat:'number'},
+  {thai:'เก้า',roman:'gâao',zh:'九',cat:'number'},
+  {thai:'สิบ',roman:'sìp',zh:'十',cat:'number'},
+  // Travel
+  {thai:'สวัสดี',roman:'sà-wàt-dii',zh:'你好',cat:'travel'},
+  {thai:'ขอบคุณ',roman:'khòop-khun',zh:'謝謝',cat:'travel'},
+  {thai:'ห้องน้ำ',roman:'hông-náam',zh:'廁所',cat:'travel'},
+  {thai:'โรงแรม',roman:'roong-raem',zh:'飯店',cat:'travel'},
+  {thai:'สนามบิน',roman:'sà-nǎam-bin',zh:'機場',cat:'travel'},
+  {thai:'ราคา',roman:'raa-khaa',zh:'價格',cat:'travel'},
+  {thai:'ซื้อ',roman:'súue',zh:'買',cat:'travel'},
+  {thai:'ขาย',roman:'khǎai',zh:'賣',cat:'travel'},
+  {thai:'แพง',roman:'phaeng',zh:'貴',cat:'travel'},
+  {thai:'ถูก',roman:'thùuk',zh:'便宜',cat:'travel'},
+  {thai:'อร่อย',roman:'à-ròi',zh:'好吃',cat:'travel'},
+  {thai:'ไม่เป็นไร',roman:'mâi-pen-rai',zh:'沒關係',cat:'travel'},
+  // Direction/Transport
+  {thai:'ซ้าย',roman:'sáai',zh:'左',cat:'direction'},
+  {thai:'ขวา',roman:'khwǎa',zh:'右',cat:'direction'},
+  {thai:'ตรงไป',roman:'trong-pai',zh:'直走',cat:'direction'},
+  {thai:'ใกล้',roman:'glâi',zh:'近',cat:'direction'},
+  {thai:'ไกล',roman:'glai',zh:'遠',cat:'direction'},
+  {thai:'รถไฟฟ้า',roman:'rót-fai-fáa',zh:'捷運/BTS',cat:'direction'},
+  {thai:'แท็กซี่',roman:'táek-sîi',zh:'計程車',cat:'direction'},
+  {thai:'รถเมล์',roman:'rót-mee',zh:'公車',cat:'direction'},
+  {thai:'สถานี',roman:'sà-thǎa-nii',zh:'車站',cat:'direction'},
 ];
 
-function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+// ── Quiz mode state ───────────────────────────────────
+let quizMode = 'basic';
+
+// Basic quiz data (consonants)
+const basicQuizData = [
+  ...consonants.mid.slice(0,7).map(c=>({thai:c.thai, answer:c.roman, zh:c.zh})),
+  ...consonants.high.slice(0,6).map(c=>({thai:c.thai, answer:c.roman, zh:c.zh})),
+  ...consonants.low.slice(0,8).map(c=>({thai:c.thai, answer:c.roman, zh:c.zh})),
+];
+
+// Tone pairs for tone discrimination mode
+const tonePairs = [
+  {base:'กา', variants:[{thai:'กา',tone:'中平調'},{thai:'ก่า',tone:'低調'},{thai:'ก้า',tone:'降調'}]},
+  {base:'มา', variants:[{thai:'มา',tone:'中平調'},{thai:'ม่า',tone:'低調'},{thai:'ม้า',tone:'高調（馬）'}]},
+  {base:'ขา', variants:[{thai:'ขา',tone:'升調（腿）'},{thai:'ข่า',tone:'低調（南薑）'},{thai:'ข้า',tone:'降調（奴僕）'}]},
+  {base:'นา', variants:[{thai:'นา',tone:'中平調（稻田）'},{thai:'น่า',tone:'低調（值得）'},{thai:'น้า',tone:'降調（舅舅/阿姨）'}]},
+];
+
+// Build mode data: consonant + vowel = word
+const buildData = [
+  {consonant:'ก', vowel:'า', result:'กา', meaning:'烏鴉', roman:'gaa'},
+  {consonant:'ม', vowel:'า', result:'มา', meaning:'來', roman:'maa'},
+  {consonant:'น', vowel:'้ำ', result:'น้ำ', meaning:'水', roman:'náam'},
+  {consonant:'ด', vowel:'ี', result:'ดี', meaning:'好', roman:'dii'},
+  {consonant:'พ', vowel:'่อ', result:'พ่อ', meaning:'爸爸', roman:'phôo'},
+  {consonant:'แ', vowel:'ม่', result:'แม่', meaning:'媽媽', roman:'mâae'},
+];
+
+function setMode(mode) {
+  quizMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mode-' + mode).classList.add('active');
+  quizScore = {correct:0, total:0};
+  document.getElementById('quizScore').textContent = '';
+  loadQuiz();
+}
 
 function loadQuiz() {
-  const pool = shuffle([...quizData]);
-  currentQ = pool[Math.floor(Math.random() * pool.length)];
-  document.getElementById('quizChar').textContent = currentQ.thai;
-  setTimeout(() => speak(currentQ.thai), 300);
+  answered = false;
   document.getElementById('quizFeedback').textContent = '';
   document.getElementById('quizNext').style.display = 'none';
-  answered = false;
+  document.getElementById('quizOptions').innerHTML = '';
 
-  // Generate 4 options
-  let options = [currentQ.answer];
-  const others = quizData.filter(q => q.answer !== currentQ.answer).map(q => q.answer);
-  const unique = [...new Set(others)];
-  while (options.length < 4 && unique.length) {
-    const pick = unique.splice(Math.floor(Math.random() * unique.length), 1)[0];
-    options.push(pick);
+  if (quizMode === 'basic') loadBasicQuiz();
+  else if (quizMode === 'listen') loadListenQuiz();
+  else if (quizMode === 'zh2thai') loadZh2ThaiQuiz();
+  else if (quizMode === 'tone') loadToneQuiz();
+  else if (quizMode === 'build') loadBuildQuiz();
+}
+
+// ── Mode 1: Basic (consonant → romaji) ───────────────
+function loadBasicQuiz() {
+  document.getElementById('quizQuestion').textContent = '這個泰文字母的羅馬拼音是？';
+  document.getElementById('quizHint').textContent = '🔊 點字母可重播發音';
+  const pool = shuffle(basicQuizData);
+  currentQ = pool[0];
+  document.getElementById('quizChar').textContent = currentQ.thai;
+  document.getElementById('quizChar').style.fontSize = '4rem';
+  setTimeout(() => speak(currentQ.thai), 300);
+  const others = shuffle(basicQuizData.filter(q => q.answer !== currentQ.answer));
+  const opts = shuffle([currentQ.answer, ...others.slice(0,3).map(q=>q.answer)]);
+  renderOpts(opts, currentQ.answer);
+}
+
+// ── Mode 2: Listen → pick Thai ───────────────────────
+function loadListenQuiz() {
+  document.getElementById('quizQuestion').textContent = '仔細聽聲調，選出對應的泰文單字';
+  document.getElementById('quizHint').textContent = '🔊 點喇叭重播';
+  const pool = shuffle(vocabData.filter(v => v.cat === 'food' || v.cat === 'number'));
+  currentQ = {thai: pool[0].thai, answer: pool[0].thai, zh: pool[0].zh, roman: pool[0].roman};
+  document.getElementById('quizChar').textContent = '🔊';
+  document.getElementById('quizChar').style.fontSize = '3rem';
+  setTimeout(() => speak(currentQ.thai), 300);
+  const others = shuffle(pool.slice(1, 10));
+  const opts = shuffle([currentQ.answer, ...others.slice(0,3).map(q=>q.thai)]);
+  renderOpts(opts, currentQ.answer, true);
+}
+
+// ── Mode 3: Chinese → Thai word ──────────────────────
+function loadZh2ThaiQuiz() {
+  document.getElementById('quizQuestion').textContent = '看中文，選出對應的泰文單字';
+  document.getElementById('quizHint').textContent = '🔊 點泰文可聽發音';
+  const pool = shuffle(vocabData);
+  currentQ = pool[0];
+  document.getElementById('quizChar').textContent = currentQ.zh;
+  document.getElementById('quizChar').style.fontSize = '2.4rem';
+  const others = shuffle(pool.slice(1,10));
+  const opts = shuffle([currentQ.thai, ...others.slice(0,3).map(q=>q.thai)]);
+  renderOpts(opts, currentQ.thai, true);
+}
+
+// ── Mode 4: Tone discrimination ──────────────────────
+function loadToneQuiz() {
+  document.getElementById('quizQuestion').textContent = '選出正確聲調的泰文（注意聲調符號！）';
+  document.getElementById('quizHint').textContent = '🔊 點選項可聽發音';
+  const pair = tonePairs[Math.floor(Math.random() * tonePairs.length)];
+  const target = pair.variants[Math.floor(Math.random() * pair.variants.length)];
+  currentQ = {thai: target.thai, answer: target.thai, tone: target.tone};
+  document.getElementById('quizChar').textContent = target.tone;
+  document.getElementById('quizChar').style.fontSize = '1.6rem';
+  setTimeout(() => speak(target.thai), 300);
+  const opts = shuffle(pair.variants.map(v => v.thai));
+  renderOpts(opts, target.thai, true);
+}
+
+// ── Mode 5: Build (consonant + vowel) ────────────────
+function loadBuildQuiz() {
+  document.getElementById('quizQuestion').textContent = '選出正確的子音和母音，組成這個單字';
+  document.getElementById('quizHint').textContent = '依序點選子音→母音';
+  const item = buildData[Math.floor(Math.random() * buildData.length)];
+  currentQ = {thai: item.result, answer: item.result, meaning: item.meaning, consonant: item.consonant, vowel: item.vowel, roman: item.roman};
+  document.getElementById('quizChar').textContent = item.meaning + '（' + item.roman + '）';
+  document.getElementById('quizChar').style.fontSize = '1.5rem';
+  document.getElementById('quizOptions').innerHTML = '';
+
+  // Consonant choices
+  const conOpts = shuffle([item.consonant, ...['ก','ม','น','ด','พ','ข','ส','ร'].filter(c=>c!==item.consonant).slice(0,3)]);
+  const vowOpts = shuffle([item.vowel, ...['า','ี','ะ','ุ','เ','โ','แ','อ'].filter(v=>v!==item.vowel).slice(0,3)]);
+
+  let selCon = null, selVow = null;
+
+  const wrap = document.getElementById('quizOptions');
+  wrap.innerHTML = `
+    <div style="font-size:0.78rem;color:var(--mid);margin-bottom:4px;">子音：</div>
+    <div class="build-choices" id="conChoices"></div>
+    <div style="font-size:0.78rem;color:var(--mid);margin:6px 0 4px;">母音：</div>
+    <div class="build-choices" id="vowChoices"></div>
+    <div class="build-slots">
+      <div class="build-slot" id="slotCon">？</div>
+      <div style="display:flex;align-items:center;font-size:1.2rem;color:var(--gold);">＋</div>
+      <div class="build-slot" id="slotVow">？</div>
+      <div style="display:flex;align-items:center;font-size:1.2rem;color:var(--gold);">＝</div>
+      <div class="build-slot" id="slotResult" style="font-size:1.4rem;">？</div>
+    </div>`;
+
+  function checkBuild() {
+    if (!selCon || !selVow) return;
+    const result = selCon + selVow;
+    document.getElementById('slotResult').textContent = result;
+    answered = true;
+    quizScore.total++;
+    if (result === item.result || selCon === item.consonant && selVow === item.vowel) {
+      quizScore.correct++;
+      document.getElementById('quizFeedback').textContent = '✓ 拼對了！' + item.result + ' = ' + item.meaning;
+      document.getElementById('quizFeedback').style.color = 'var(--green)';
+      speak(item.result);
+    } else {
+      document.getElementById('quizFeedback').textContent = '✗ 正確是：' + item.consonant + ' ＋ ' + item.vowel + ' = ' + item.result;
+      document.getElementById('quizFeedback').style.color = '#c0392b';
+    }
+    document.getElementById('quizNext').style.display = 'inline-block';
+    updateQuizScore();
   }
-  shuffle(options);
 
-  const optEl = document.getElementById('quizOptions');
-  optEl.innerHTML = '';
-  options.forEach(opt => {
+  conOpts.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'build-choice'; b.textContent = c;
+    b.onclick = () => {
+      document.querySelectorAll('#conChoices .build-choice').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected'); selCon = c;
+      document.getElementById('slotCon').textContent = c;
+      checkBuild();
+    };
+    document.getElementById('conChoices').appendChild(b);
+  });
+  vowOpts.forEach(v => {
+    const b = document.createElement('button');
+    b.className = 'build-choice'; b.textContent = v;
+    b.onclick = () => {
+      document.querySelectorAll('#vowChoices .build-choice').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected'); selVow = v;
+      document.getElementById('slotVow').textContent = v;
+      checkBuild();
+    };
+    document.getElementById('vowChoices').appendChild(b);
+  });
+}
+
+// ── Shared option renderer ────────────────────────────
+function renderOpts(opts, correctAnswer, isThai = false) {
+  const el = document.getElementById('quizOptions');
+  el.innerHTML = '';
+  opts.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'quiz-opt';
     btn.textContent = opt;
-    btn.onclick = () => checkAnswer(opt, btn);
-    optEl.appendChild(btn);
+    if (isThai) {
+      btn.style.fontFamily = "'Sarabun', sans-serif";
+      btn.style.fontSize = '1.3rem';
+      btn.onclick = () => { speak(opt); checkAnswer(opt, btn, correctAnswer); };
+    } else {
+      btn.onclick = () => checkAnswer(opt, btn, correctAnswer);
+    }
+    el.appendChild(btn);
   });
-
-  updateQuizScore();
 }
 
-function checkAnswer(opt, btn) {
+function checkAnswer(opt, btn, correctAnswer) {
   if (answered) return;
   answered = true;
   quizScore.total++;
+  const correct = correctAnswer || currentQ.answer;
   document.querySelectorAll('.quiz-opt').forEach(b => {
-    if (b.textContent === currentQ.answer) b.classList.add('correct');
+    if (b.textContent === correct) b.classList.add('correct');
   });
   speak(currentQ.thai);
-  if (opt === currentQ.answer) {
+  if (opt === correct) {
     quizScore.correct++;
     document.getElementById('quizFeedback').textContent = '✓ 答對了！';
     document.getElementById('quizFeedback').style.color = 'var(--green)';
   } else {
     btn.classList.add('wrong');
-    document.getElementById('quizFeedback').textContent = `✗ 正確答案是：${currentQ.answer}`;
+    document.getElementById('quizFeedback').textContent = `✗ 正確答案是：${correct}`;
     document.getElementById('quizFeedback').style.color = '#c0392b';
   }
   document.getElementById('quizNext').style.display = 'inline-block';
@@ -864,12 +1208,37 @@ function updateQuizScore() {
   }
 }
 
+// ── Vocab rendering ───────────────────────────────────
+function showVocabCat(cat) {
+  document.querySelectorAll('.vocab-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('vtab-' + cat).classList.add('active');
+  renderVocab(cat);
+}
+
+function renderVocab(cat) {
+  const items = cat === 'all' ? vocabData : vocabData.filter(v => v.cat === cat);
+  const grid = document.getElementById('vocabGrid');
+  grid.innerHTML = '';
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'vocab-card';
+    card.innerHTML = `
+      <div class="vocab-speak">🔊</div>
+      <div class="vocab-thai">${item.thai}</div>
+      <div class="vocab-roman">${item.roman}</div>
+      <div class="vocab-zh">${item.zh}</div>`;
+    card.onclick = () => speak(item.thai);
+    grid.appendChild(card);
+  });
+}
+
 // Init
 renderGrid('grid-mid', consonants.mid);
 renderGrid('grid-high', consonants.high);
 renderGrid('grid-low', consonants.low);
 renderChecklist();
 updateProgress();
+loadQuiz();
 </script>
 </body>
 </html>
