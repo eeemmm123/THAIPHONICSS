@@ -692,16 +692,35 @@ function initVoices() {
 }
 if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = initVoices;
-  initVoices();
+  setTimeout(initVoices, 100);
 }
-function speak(text) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
+
+// iOS unlock: resume AudioContext on first tap
+let ttsUnlocked = false;
+document.addEventListener('touchend', function unlockTTS() {
+  if (ttsUnlocked) return;
+  ttsUnlocked = true;
+  const utt = new SpeechSynthesisUtterance('');
   utt.lang = 'th-TH';
-  utt.rate = 0.8;
-  if (ttsVoice) utt.voice = ttsVoice;
+  utt.volume = 0;
   window.speechSynthesis.speak(utt);
+  initVoices();
+  document.removeEventListener('touchend', unlockTTS);
+}, { once: false });
+
+function speak(text) {
+  if (!window.speechSynthesis || !text) return;
+  // iOS workaround: cancel + small delay
+  window.speechSynthesis.cancel();
+  setTimeout(() => {
+    initVoices();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'th-TH';
+    utt.rate = 0.8;
+    utt.volume = 1;
+    if (ttsVoice) utt.voice = ttsVoice;
+    window.speechSynthesis.speak(utt);
+  }, 150);
 }
 
 // ── State ─────────────────────────────────────────────
