@@ -208,6 +208,8 @@
   .alpha-roman { font-size: 0.75rem; color: var(--mid); margin-top: 2px; font-family: 'Sarabun', sans-serif; }
   .alpha-zh { font-size: 0.7rem; color: #888; margin-top: 1px; }
   .alpha-class { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-top: 3px; font-family: 'Sarabun', sans-serif; }
+  .alpha-speak { font-size: 0.75rem; margin-top: 4px; opacity: 0.5; transition: opacity 0.2s; }
+  .alpha-card:hover .alpha-speak { opacity: 1; }
 
   /* Tone rules */
   .tone-table {
@@ -493,55 +495,55 @@
   <h3 style="color:var(--deep-red);margin-bottom:0.8rem;font-size:1.05rem;">🔵 短母音（Short Vowels）</h3>
   <table class="tone-table">
     <tr><th>符號</th><th>發音</th><th>例字</th><th>意思</th><th>位置</th></tr>
-    <tr><td class="tone-mark">–ะ / –ั</td><td>a（短）</td><td class="tone-mark">กะ / กัน</td><td>撞 / 彼此</td><td>後方</td></tr>
-    <tr><td class="tone-mark">–ิ</td><td>i（短）</td><td class="tone-mark">กิน</td><td>吃</td><td>上方</td></tr>
-    <tr><td class="tone-mark">–ึ</td><td>ue（短）</td><td class="tone-mark">กึ่ง</td><td>一半</td><td>上方</td></tr>
-    <tr><td class="tone-mark">–ุ</td><td>u（短）</td><td class="tone-mark">กุ้ง</td><td>蝦子</td><td>下方</td></tr>
-    <tr><td class="tone-mark">เ–ะ</td><td>e（短）</td><td class="tone-mark">เกะ</td><td>礙事</td><td>前方</td></tr>
-    <tr><td class="tone-mark">แ–ะ</td><td>ae（短）</td><td class="tone-mark">แกะ</td><td>羊</td><td>前方</td></tr>
-    <tr><td class="tone-mark">โ–ะ</td><td>o（短）</td><td class="tone-mark">โต๊ะ</td><td>桌子</td><td>前方</td></tr>
-    <tr><td class="tone-mark">เ–าะ</td><td>or（短）</td><td class="tone-mark">เกาะ</td><td>島嶼</td><td>環繞</td></tr>
-    <tr><td class="tone-mark">เ–อะ</td><td>oe（短）</td><td class="tone-mark">เกอะ</td><td>笨拙</td><td>前+後</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ะ')" title="點我聽發音">–ะ / –ั 🔊</td><td>a（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('กะ')" title="點我聽發音">กะ / กัน 🔊</td><td>撞 / 彼此</td><td>後方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ิ')" title="點我聽發音">–ิ 🔊</td><td>i（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('กิน')" title="點我聽發音">กิน 🔊</td><td>吃</td><td>上方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ึ')" title="點我聽發音">–ึ 🔊</td><td>ue（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('กึ่ง')" title="點我聽發音">กึ่ง 🔊</td><td>一半</td><td>上方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ุ')" title="點我聽發音">–ุ 🔊</td><td>u（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('กุ้ง')" title="點我聽發音">กุ้ง 🔊</td><td>蝦子</td><td>下方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('เ')" title="點我聽發音">เ–ะ 🔊</td><td>e（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('เกะ')" title="點我聽發音">เกะ 🔊</td><td>礙事</td><td>前方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('แ')" title="點我聽發音">แ–ะ 🔊</td><td>ae（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('แกะ')" title="點我聽發音">แกะ 🔊</td><td>羊</td><td>前方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('โ')" title="點我聽發音">โ–ะ 🔊</td><td>o（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('โต๊ะ')" title="點我聽發音">โต๊ะ 🔊</td><td>桌子</td><td>前方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('เ')" title="點我聽發音">เ–าะ 🔊</td><td>or（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('เกาะ')" title="點我聽發音">เกาะ 🔊</td><td>島嶼</td><td>環繞</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('เ')" title="點我聽發音">เ–อะ 🔊</td><td>oe（短）</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('เกอะ')" title="點我聽發音">เกอะ 🔊</td><td>笨拙</td><td>前+後</td></tr>
   </table>
 
   <!-- 長母音 -->
   <h3 style="color:var(--deep-red);margin:1.5rem 0 0.8rem;font-size:1.05rem;">🟠 長母音（Long Vowels）</h3>
   <table class="tone-table">
     <tr><th>符號</th><th>發音</th><th>例字</th><th>意思</th><th>位置</th></tr>
-    <tr><td class="tone-mark">–า</td><td>aa</td><td class="tone-mark">กา</td><td>烏鴉</td><td>後方</td></tr>
-    <tr><td class="tone-mark">–ี</td><td>ii</td><td class="tone-mark">ดี</td><td>好</td><td>上方</td></tr>
-    <tr><td class="tone-mark">–ื / –ือ</td><td>uue</td><td class="tone-mark">มือ</td><td>手</td><td>上方+後</td></tr>
-    <tr><td class="tone-mark">–ู</td><td>uu</td><td class="tone-mark">รู</td><td>洞</td><td>下方</td></tr>
-    <tr><td class="tone-mark">เ–</td><td>ee</td><td class="tone-mark">เก</td><td>（音節）</td><td>前方</td></tr>
-    <tr><td class="tone-mark">แ–</td><td>aee</td><td class="tone-mark">แม่</td><td>媽媽</td><td>前方</td></tr>
-    <tr><td class="tone-mark">โ–</td><td>oo</td><td class="tone-mark">โต</td><td>大</td><td>前方</td></tr>
-    <tr><td class="tone-mark">–อ / –อ</td><td>or</td><td class="tone-mark">กอ</td><td>（字母名）</td><td>後方</td></tr>
-    <tr><td class="tone-mark">เ–อ</td><td>ooe</td><td class="tone-mark">เกอ</td><td>（音節）</td><td>前+後</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('า')" title="點我聽發音">–า 🔊</td><td>aa</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('กา')" title="點我聽發音">กา 🔊</td><td>烏鴉</td><td>後方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ี')" title="點我聽發音">–ี 🔊</td><td>ii</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('ดี')" title="點我聽發音">ดี 🔊</td><td>好</td><td>上方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ื')" title="點我聽發音">–ื / –ือ 🔊</td><td>uue</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('มือ')" title="點我聽發音">มือ 🔊</td><td>手</td><td>上方+後</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ู')" title="點我聽發音">–ู 🔊</td><td>uu</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('รู')" title="點我聽發音">รู 🔊</td><td>洞</td><td>下方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('เ')" title="點我聽發音">เ– 🔊</td><td>ee</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('เก')" title="點我聽發音">เก 🔊</td><td>（音節）</td><td>前方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('แ')" title="點我聽發音">แ– 🔊</td><td>aee</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('แม่')" title="點我聽發音">แม่ 🔊</td><td>媽媽</td><td>前方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('โ')" title="點我聽發音">โ– 🔊</td><td>oo</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('โต')" title="點我聽發音">โต 🔊</td><td>大</td><td>前方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('อ')" title="點我聽發音">–อ / –อ 🔊</td><td>or</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('กอ')" title="點我聽發音">กอ 🔊</td><td>（字母名）</td><td>後方</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('เ')" title="點我聽發音">เ–อ 🔊</td><td>ooe</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('เกอ')" title="點我聽發音">เกอ 🔊</td><td>（音節）</td><td>前+後</td></tr>
   </table>
 
   <!-- 複合母音 -->
   <h3 style="color:var(--deep-red);margin:1.5rem 0 0.8rem;font-size:1.05rem;">🟣 複合母音（Diphthongs）</h3>
   <table class="tone-table">
     <tr><th>符號</th><th>發音</th><th>例字</th><th>意思</th></tr>
-    <tr><td class="tone-mark">เ–ีย</td><td>ia</td><td class="tone-mark">เบีย</td><td>啤酒</td></tr>
-    <tr><td class="tone-mark">เ–ือ</td><td>uea</td><td class="tone-mark">เมือง</td><td>城市</td></tr>
-    <tr><td class="tone-mark">–ัว / –ว</td><td>ua</td><td class="tone-mark">วัว</td><td>牛</td></tr>
-    <tr><td class="tone-mark">เ–า</td><td>ao</td><td class="tone-mark">เขา</td><td>他/她</td></tr>
-    <tr><td class="tone-mark">–าย</td><td>aai</td><td class="tone-mark">ขาย</td><td>賣</td></tr>
-    <tr><td class="tone-mark">–อย</td><td>oi</td><td class="tone-mark">น้อย</td><td>少</td></tr>
-    <tr><td class="tone-mark">–าว</td><td>aao</td><td class="tone-mark">ข้าว</td><td>米飯</td></tr>
-    <tr><td class="tone-mark">–ิว</td><td>io</td><td class="tone-mark">หิว</td><td>餓</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('เ')" title="點我聽發音">เ–ีย 🔊</td><td>ia</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('เบีย')" title="點我聽發音">เบีย 🔊</td><td>啤酒</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('เ')" title="點我聽發音">เ–ือ 🔊</td><td>uea</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('เมือง')" title="點我聽發音">เมือง 🔊</td><td>城市</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ัว')" title="點我聽發音">–ัว / –ว 🔊</td><td>ua</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('วัว')" title="點我聽發音">วัว 🔊</td><td>牛</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('เ')" title="點我聽發音">เ–า 🔊</td><td>ao</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('เขา')" title="點我聽發音">เขา 🔊</td><td>他/她</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('าย')" title="點我聽發音">–าย 🔊</td><td>aai</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('ขาย')" title="點我聽發音">ขาย 🔊</td><td>賣</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('อย')" title="點我聽發音">–อย 🔊</td><td>oi</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('น้อย')" title="點我聽發音">น้อย 🔊</td><td>少</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('าว')" title="點我聽發音">–าว 🔊</td><td>aao</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('ข้าว')" title="點我聽發音">ข้าว 🔊</td><td>米飯</td></tr>
+    <tr><td class="tone-mark" style="cursor:pointer;" onclick="speak('ิว')" title="點我聽發音">–ิว 🔊</td><td>io</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('หิว')" title="點我聽發音">หิว 🔊</td><td>餓</td></tr>
   </table>
 
   <!-- 聲調 -->
   <h3 style="color:var(--deep-red);margin:1.5rem 0 0.8rem;font-size:1.05rem;">📌 五個聲調</h3>
   <table class="tone-table">
     <tr><th>聲調</th><th>符號</th><th>描述</th><th>例子</th><th>記憶法</th></tr>
-    <tr><td>中平調</td><td class="tone-mark">—</td><td>平穩中音，無符號</td><td class="tone-mark">กา</td><td>平靜說「啊～」</td></tr>
-    <tr><td>低調</td><td class="tone-mark">่</td><td>低平音</td><td class="tone-mark">ก่า</td><td>懶洋洋地說</td></tr>
-    <tr><td>降調</td><td class="tone-mark">้</td><td>從高降下</td><td class="tone-mark">ก้า</td><td>驚訝「啊↘」</td></tr>
-    <tr><td>高調</td><td class="tone-mark">๊</td><td>高而平</td><td class="tone-mark">ก๊า</td><td>尖聲「啊！」</td></tr>
-    <tr><td>升調</td><td class="tone-mark">๋</td><td>從低升高</td><td class="tone-mark">ก๋า</td><td>疑問「啊↗」</td></tr>
+    <tr><td>中平調</td><td class="tone-mark">—</td><td>平穩中音，無符號</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('กา')" title="點我聽發音">กา 🔊</td><td>平靜說「啊～」</td></tr>
+    <tr><td>低調</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('่')" title="點我聽發音">่ 🔊</td><td>低平音</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('ก่า')" title="點我聽發音">ก่า 🔊</td><td>懶洋洋地說</td></tr>
+    <tr><td>降調</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('้')" title="點我聽發音">้ 🔊</td><td>從高降下</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('ก้า')" title="點我聽發音">ก้า 🔊</td><td>驚訝「啊↘」</td></tr>
+    <tr><td>高調</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('๊')" title="點我聽發音">๊ 🔊</td><td>高而平</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('ก๊า')" title="點我聽發音">ก๊า 🔊</td><td>尖聲「啊！」</td></tr>
+    <tr><td>升調</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('๋')" title="點我聽發音">๋ 🔊</td><td>從低升高</td><td class="tone-mark" style="cursor:pointer;" onclick="speak('ก๋า')" title="點我聽發音">ก๋า 🔊</td><td>疑問「啊↗」</td></tr>
   </table>
 
   <h3 style="color:var(--deep-red);margin:1.5rem 0 0.8rem;font-size:1.05rem;">📌 聲調決定規則 + 記憶口訣</h3>
@@ -574,7 +576,8 @@
   <div class="section-sub">看泰文字母，選出正確的羅馬拼音</div>
   <div class="quiz-card">
     <div class="quiz-question">這個泰文字母的羅馬拼音是？</div>
-    <div class="quiz-thai" id="quizChar">ก</div>
+    <div class="quiz-thai" id="quizChar" style="cursor:pointer;" onclick="speak(this.textContent)" title="點我聽發音">ก</div>
+    <div style="font-size:0.78rem;color:var(--gold);margin-bottom:0.5rem;">🔊 點字母可重播發音</div>
     <div class="quiz-options" id="quizOptions"></div>
     <div class="quiz-feedback" id="quizFeedback"></div>
     <button class="quiz-next" id="quizNext" onclick="nextQuestion()">下一題 →</button>
@@ -681,7 +684,27 @@ const checklist = [
   {text:'能不查表拼讀50個常用詞彙',detail:'數字、顏色、基本動詞、食物名稱',week:'第12週'},
 ];
 
-// State
+// ── TTS ──────────────────────────────────────────────
+let ttsVoice = null;
+function initVoices() {
+  const voices = window.speechSynthesis.getVoices();
+  ttsVoice = voices.find(v => v.lang === 'th-TH') || voices.find(v => v.lang.startsWith('th')) || null;
+}
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = initVoices;
+  initVoices();
+}
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'th-TH';
+  utt.rate = 0.8;
+  if (ttsVoice) utt.voice = ttsVoice;
+  window.speechSynthesis.speak(utt);
+}
+
+// ── State ─────────────────────────────────────────────
 let learned = JSON.parse(localStorage.getItem('thaiLearned') || '{}');
 let checks = JSON.parse(localStorage.getItem('thaiChecks') || '{}');
 let quizScore = {correct:0, total:0};
@@ -711,8 +734,9 @@ function renderGrid(containerId, items) {
     const key = containerId + i;
     const div = document.createElement('div');
     div.className = 'alpha-card' + (learned[key] ? ' learned' : '');
-    div.innerHTML = `<div class="alpha-thai">${c.thai}</div><div class="alpha-roman">${c.roman}</div><div class="alpha-zh">${c.zh}</div><div class="alpha-class">${c.cls}</div>`;
-    div.onclick = () => {
+    div.innerHTML = `<div class="alpha-thai">${c.thai}</div><div class="alpha-roman">${c.roman}</div><div class="alpha-zh">${c.zh}</div><div class="alpha-class">${c.cls}</div><div class="alpha-speak" title="播放發音">🔊</div>`;
+    div.onclick = (e) => {
+      if (e.target.classList.contains('alpha-speak')) { speak(c.thai); return; }
       learned[key] = !learned[key];
       div.classList.toggle('learned', learned[key]);
       saveState();
@@ -763,6 +787,7 @@ function loadQuiz() {
   const pool = shuffle([...quizData]);
   currentQ = pool[Math.floor(Math.random() * pool.length)];
   document.getElementById('quizChar').textContent = currentQ.thai;
+  setTimeout(() => speak(currentQ.thai), 300);
   document.getElementById('quizFeedback').textContent = '';
   document.getElementById('quizNext').style.display = 'none';
   answered = false;
@@ -797,6 +822,7 @@ function checkAnswer(opt, btn) {
   document.querySelectorAll('.quiz-opt').forEach(b => {
     if (b.textContent === currentQ.answer) b.classList.add('correct');
   });
+  speak(currentQ.thai);
   if (opt === currentQ.answer) {
     quizScore.correct++;
     document.getElementById('quizFeedback').textContent = '✓ 答對了！';
