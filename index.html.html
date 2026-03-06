@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>泰文拼音系統學習課程</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Sarabun:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9922a;
+    --deep-red: #8b1a1a;
+    --cream: #fdf6ec;
+    --dark: #1a1208;
+    --mid: #4a3520;
+    --light-gold: #f0d9a0;
+    --green: #2d6a4f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'Noto Serif TC', serif;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--deep-red) 0%, #5c1010 50%, var(--dark) 100%);
+    color: var(--cream);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "🇹🇭";
+    position: absolute;
+    font-size: 12rem;
+    opacity: 0.05;
+    top: -2rem;
+    right: -2rem;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    color: var(--light-gold);
+    letter-spacing: 2px;
+    margin-bottom: 0.4rem;
+  }
+  header p {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 1.05rem;
+    color: rgba(253,246,236,0.7);
+    letter-spacing: 1px;
+  }
+  .thai-deco {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    margin: 0.8rem 0;
+    letter-spacing: 8px;
+    opacity: 0.8;
+  }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    height: 8px;
+    margin: 1.5rem auto 0;
+    max-width: 400px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 20px;
+    transition: width 0.6s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-size: 0.8rem;
+    color: var(--light-gold);
+    margin-top: 0.4rem;
+    font-family: 'Sarabun', sans-serif;
+  }
+
+  /* Navigation tabs */
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: var(--dark);
+    overflow-x: auto;
+    border-bottom: 3px solid var(--gold);
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: rgba(253,246,236,0.55);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.88rem;
+    padding: 0.9rem 1.2rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: all 0.25s;
+  }
+  nav button:hover { color: var(--light-gold); }
+  nav button.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* Main layout */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* Section panels */
+  .panel { display: none; animation: fadeIn 0.4s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Section title */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--deep-red);
+    margin-bottom: 0.3rem;
+  }
+  .section-sub {
+    color: var(--mid);
+    font-size: 0.92rem;
+    margin-bottom: 1.8rem;
+    font-style: italic;
+  }
+
+  /* Phase cards (overview) */
+  .phases { display: flex; flex-direction: column; gap: 1.2rem; }
+  .phase-card {
+    border: 2px solid var(--light-gold);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    background: white;
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .phase-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(201,146,42,0.15); }
+  .phase-num {
+    background: var(--deep-red);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .phase-info h3 { font-size: 1.1rem; color: var(--dark); margin-bottom: 0.3rem; }
+  .phase-info p { font-size: 0.88rem; color: var(--mid); line-height: 1.6; }
+  .phase-tag {
+    display: inline-block;
+    background: var(--light-gold);
+    color: var(--mid);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 0.4rem;
+    font-family: 'Sarabun', sans-serif;
+  }
+
+  /* Alphabet grid */
+  .alpha-section { margin-bottom: 2rem; }
+  .alpha-section h3 {
+    font-size: 1rem;
+    color: var(--deep-red);
+    margin-bottom: 0.8rem;
+    border-left: 4px solid var(--gold);
+    padding-left: 0.8rem;
+  }
+  .alpha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 0.6rem;
+  }
+  .alpha-card {
+    background: white;
+    border: 1.5px solid var(--light-gold);
+    border-radius: 10px;
+    padding: 0.8rem 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .alpha-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(201,146,42,0.2); }
+  .alpha-card.learned { background: #f0f9f4; border-color: var(--green); }
+  .alpha-thai { font-family: 'Sarabun', sans-serif; font-size: 1.8rem; color: var(--deep-red); }
+  .alpha-roman { font-size: 0.75rem; color: var(--mid); margin-top: 2px; font-family: 'Sarabun', sans-serif; }
+  .alpha-zh { font-size: 0.7rem; color: #888; margin-top: 1px; }
+  .alpha-class { font-size: 0.65rem; color: var(--gold); font-weight: 700; margin-top: 3px; font-family: 'Sarabun', sans-serif; }
+
+  /* Tone rules */
+  .tone-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 2rem;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .tone-table th {
+    background: var(--deep-red);
+    color: var(--cream);
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    text-align: left;
+    font-family: 'Sarabun', sans-serif;
+  }
+  .tone-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid #f0e8d8;
+    font-size: 0.88rem;
+  }
+  .tone-table tr:last-child td { border-bottom: none; }
+  .tone-table tr:nth-child(even) td { background: #fdf6ec; }
+  .tone-mark { font-family: 'Sarabun', sans-serif; font-size: 1.3rem; color: var(--deep-red); }
+
+  /* Checklist */
+  .checklist { display: flex; flex-direction: column; gap: 0.7rem; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    background: white;
+    border: 1.5px solid var(--light-gold);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .check-item:hover { border-color: var(--gold); }
+  .check-item.done { background: #f0f9f4; border-color: var(--green); opacity: 0.85; }
+  .check-box {
+    width: 22px; height: 22px;
+    border: 2px solid var(--gold);
+    border-radius: 5px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+  .check-item.done .check-box { background: var(--green); border-color: var(--green); color: white; }
+  .check-text strong { font-size: 0.95rem; display: block; margin-bottom: 2px; }
+  .check-text span { font-size: 0.82rem; color: var(--mid); }
+  .week-label {
+    font-size: 0.78rem;
+    font-family: 'Sarabun', sans-serif;
+    background: var(--light-gold);
+    color: var(--mid);
+    padding: 2px 7px;
+    border-radius: 8px;
+    margin-left: auto;
+    flex-shrink: 0;
+    height: fit-content;
+    font-weight: 600;
+  }
+
+  /* Resources */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .resource-card {
+    background: white;
+    border: 1.5px solid var(--light-gold);
+    border-radius: 12px;
+    padding: 1.2rem;
+    transition: all 0.2s;
+  }
+  .resource-card:hover { border-color: var(--gold); box-shadow: 0 4px 16px rgba(201,146,42,0.15); }
+  .resource-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .resource-card h4 { font-size: 0.95rem; color: var(--dark); margin-bottom: 0.3rem; }
+  .resource-card p { font-size: 0.82rem; color: var(--mid); line-height: 1.55; }
+  .resource-type {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-family: 'Sarabun', sans-serif;
+    background: var(--deep-red);
+    color: white;
+    padding: 2px 7px;
+    border-radius: 8px;
+    margin-top: 0.6rem;
+  }
+
+  /* Quiz */
+  .quiz-card {
+    background: white;
+    border: 2px solid var(--light-gold);
+    border-radius: 14px;
+    padding: 2rem;
+    text-align: center;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .quiz-thai {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 4rem;
+    color: var(--deep-red);
+    margin: 1rem 0;
+    line-height: 1;
+  }
+  .quiz-question { font-size: 0.95rem; color: var(--mid); margin-bottom: 1.5rem; }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+  }
+  .quiz-opt {
+    padding: 0.7rem;
+    border: 1.5px solid var(--light-gold);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Sarabun', sans-serif;
+    transition: all 0.2s;
+    background: white;
+  }
+  .quiz-opt:hover { border-color: var(--gold); background: #fdf6ec; }
+  .quiz-opt.correct { background: #e8f5e9; border-color: var(--green); color: var(--green); font-weight: 700; }
+  .quiz-opt.wrong { background: #fdecea; border-color: #c0392b; color: #c0392b; }
+  .quiz-feedback { font-size: 0.9rem; min-height: 1.4rem; color: var(--mid); }
+  .quiz-next {
+    background: var(--deep-red);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.65rem 1.8rem;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 0.8rem;
+    transition: background 0.2s;
+    display: none;
+  }
+  .quiz-next:hover { background: #6b1010; }
+  .quiz-score {
+    font-size: 0.85rem;
+    color: var(--gold);
+    font-family: 'Sarabun', sans-serif;
+    margin-top: 1rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.8rem; }
+    .alpha-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); }
+    .quiz-thai { font-size: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>泰文拼音系統</h1>
+  <div class="thai-deco">ก ข ค ง จ ช</div>
+  <p>系統學習課程 · 從零開始到能自行拼讀</p>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">完成進度：0%</div>
+</header>
+
+<nav>
+  <button class="active" onclick="showPanel('overview')">📋 課程總覽</button>
+  <button onclick="showPanel('alphabet')">🔤 子音表</button>
+  <button onclick="showPanel('vowels')">🎵 母音與聲調</button>
+  <button onclick="showPanel('checklist')">✅ 學習清單</button>
+  <button onclick="showPanel('quiz')">🧠 拼音練習</button>
+  <button onclick="showPanel('resources')">📚 學習資源</button>
+</nav>
+
+<main>
+
+<!-- 課程總覽 -->
+<div class="panel active" id="panel-overview">
+  <div class="section-title">課程總覽</div>
+  <div class="section-sub">泰語共有 44 個子音、32 個母音及 5 個聲調，分四個階段系統掌握</div>
+  <div class="phases">
+    <div class="phase-card" onclick="showPanel('alphabet')">
+      <div class="phase-num">1</div>
+      <div class="phase-info">
+        <h3>第一階段：認識子音（4–6 週）</h3>
+        <p>泰語有 44 個子音字母，分為高、中、低三個聲調組。先學最常見的 20 個，建立基礎辨識能力。每天練習 5–8 個字母的書寫與發音。</p>
+        <span class="phase-tag">⏱ 每天 20–30 分鐘</span>
+      </div>
+    </div>
+    <div class="phase-card" onclick="showPanel('vowels')">
+      <div class="phase-num">2</div>
+      <div class="phase-info">
+        <h3>第二階段：母音與拼音規則（3–4 週）</h3>
+        <p>學習 32 個母音符號（短母音、長母音、複合母音），掌握母音的書寫位置（上、下、前、後、環繞），能拼讀簡單詞彙。</p>
+        <span class="phase-tag">⏱ 每天 30 分鐘</span>
+      </div>
+    </div>
+    <div class="phase-card" onclick="showPanel('vowels')">
+      <div class="phase-num">3</div>
+      <div class="phase-info">
+        <h3>第三階段：聲調系統（3–4 週）</h3>
+        <p>泰語有 5 個聲調：中、低、降、高、升。聲調由「子音組別 + 聲調符號 + 音節類型」共同決定，這是最關鍵也最具挑戰的部分。</p>
+        <span class="phase-tag">⏱ 每天 30–40 分鐘</span>
+      </div>
+    </div>
+    <div class="phase-card" onclick="showPanel('checklist')">
+      <div class="phase-num">4</div>
+      <div class="phase-info">
+        <h3>第四階段：實戰拼讀（持續練習）</h3>
+        <p>結合前三階段，練習拼讀真實詞彙、招牌、菜單。建議搭配聽力輸入，讓拼音與聲音記憶結合。</p>
+        <span class="phase-tag">⏱ 每天 30–60 分鐘</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 子音表 -->
+<div class="panel" id="panel-alphabet">
+  <div class="section-title">泰語子音表</div>
+  <div class="section-sub">點擊字母可標記為「已學習」。共 44 個子音，分高、中、低三組</div>
+
+  <div class="alpha-section">
+    <h3>🔴 中組子音（Middle Class）— 9 個，聲調最規律</h3>
+    <div class="alpha-grid" id="grid-mid"></div>
+  </div>
+  <div class="alpha-section">
+    <h3>🟡 高組子音（High Class）— 11 個</h3>
+    <div class="alpha-grid" id="grid-high"></div>
+  </div>
+  <div class="alpha-section">
+    <h3>🟢 低組子音（Low Class）— 24 個，最多</h3>
+    <div class="alpha-grid" id="grid-low"></div>
+  </div>
+</div>
+
+<!-- 母音與聲調 -->
+<div class="panel" id="panel-vowels">
+  <div class="section-title">母音與聲調規則</div>
+  <div class="section-sub">泰語聲調由子音組、聲調符號、音節開合共同決定；母音共 32 個</div>
+
+  <!-- 母音位置說明 -->
+  <h3 style="color:var(--deep-red);margin:1.2rem 0 0.8rem;font-size:1.05rem;">📍 母音書寫位置（ก 代表子音）</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.7rem;margin-bottom:1.8rem;">
+    <div style="background:white;border:1.5px solid var(--light-gold);border-radius:10px;padding:0.8rem;text-align:center;">
+      <div style="font-size:0.7rem;color:var(--gold);font-weight:700;margin-bottom:4px;">後方</div>
+      <div class="tone-mark" style="font-size:1.6rem;">กา</div>
+      <div style="font-size:0.75rem;color:var(--mid);margin-top:4px;">า 接在右邊</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--light-gold);border-radius:10px;padding:0.8rem;text-align:center;">
+      <div style="font-size:0.7rem;color:var(--gold);font-weight:700;margin-bottom:4px;">上方</div>
+      <div class="tone-mark" style="font-size:1.6rem;">กิ กี</div>
+      <div style="font-size:0.75rem;color:var(--mid);margin-top:4px;">寫在子音正上方</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--light-gold);border-radius:10px;padding:0.8rem;text-align:center;">
+      <div style="font-size:0.7rem;color:var(--gold);font-weight:700;margin-bottom:4px;">下方</div>
+      <div class="tone-mark" style="font-size:1.6rem;">กุ กู</div>
+      <div style="font-size:0.75rem;color:var(--mid);margin-top:4px;">寫在子音正下方</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--light-gold);border-radius:10px;padding:0.8rem;text-align:center;">
+      <div style="font-size:0.7rem;color:var(--gold);font-weight:700;margin-bottom:4px;">前方</div>
+      <div class="tone-mark" style="font-size:1.6rem;">เก โก</div>
+      <div style="font-size:0.75rem;color:var(--mid);margin-top:4px;">母音寫在子音左邊</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--light-gold);border-radius:10px;padding:0.8rem;text-align:center;">
+      <div style="font-size:0.7rem;color:var(--gold);font-weight:700;margin-bottom:4px;">環繞</div>
+      <div class="tone-mark" style="font-size:1.6rem;">เกา</div>
+      <div style="font-size:0.75rem;color:var(--mid);margin-top:4px;">前後都有符號</div>
+    </div>
+  </div>
+
+  <!-- 短母音 -->
+  <h3 style="color:var(--deep-red);margin-bottom:0.8rem;font-size:1.05rem;">🔵 短母音（Short Vowels）</h3>
+  <table class="tone-table">
+    <tr><th>符號</th><th>發音</th><th>例字</th><th>意思</th><th>位置</th></tr>
+    <tr><td class="tone-mark">–ะ / –ั</td><td>a（短）</td><td class="tone-mark">กะ / กัน</td><td>撞 / 彼此</td><td>後方</td></tr>
+    <tr><td class="tone-mark">–ิ</td><td>i（短）</td><td class="tone-mark">กิน</td><td>吃</td><td>上方</td></tr>
+    <tr><td class="tone-mark">–ึ</td><td>ue（短）</td><td class="tone-mark">กึ่ง</td><td>一半</td><td>上方</td></tr>
+    <tr><td class="tone-mark">–ุ</td><td>u（短）</td><td class="tone-mark">กุ้ง</td><td>蝦子</td><td>下方</td></tr>
+    <tr><td class="tone-mark">เ–ะ</td><td>e（短）</td><td class="tone-mark">เกะ</td><td>礙事</td><td>前方</td></tr>
+    <tr><td class="tone-mark">แ–ะ</td><td>ae（短）</td><td class="tone-mark">แกะ</td><td>羊</td><td>前方</td></tr>
+    <tr><td class="tone-mark">โ–ะ</td><td>o（短）</td><td class="tone-mark">โต๊ะ</td><td>桌子</td><td>前方</td></tr>
+    <tr><td class="tone-mark">เ–าะ</td><td>or（短）</td><td class="tone-mark">เกาะ</td><td>島嶼</td><td>環繞</td></tr>
+    <tr><td class="tone-mark">เ–อะ</td><td>oe（短）</td><td class="tone-mark">เกอะ</td><td>笨拙</td><td>前+後</td></tr>
+  </table>
+
+  <!-- 長母音 -->
+  <h3 style="color:var(--deep-red);margin:1.5rem 0 0.8rem;font-size:1.05rem;">🟠 長母音（Long Vowels）</h3>
+  <table class="tone-table">
+    <tr><th>符號</th><th>發音</th><th>例字</th><th>意思</th><th>位置</th></tr>
+    <tr><td class="tone-mark">–า</td><td>aa</td><td class="tone-mark">กา</td><td>烏鴉</td><td>後方</td></tr>
+    <tr><td class="tone-mark">–ี</td><td>ii</td><td class="tone-mark">ดี</td><td>好</td><td>上方</td></tr>
+    <tr><td class="tone-mark">–ื / –ือ</td><td>uue</td><td class="tone-mark">มือ</td><td>手</td><td>上方+後</td></tr>
+    <tr><td class="tone-mark">–ู</td><td>uu</td><td class="tone-mark">รู</td><td>洞</td><td>下方</td></tr>
+    <tr><td class="tone-mark">เ–</td><td>ee</td><td class="tone-mark">เก</td><td>（音節）</td><td>前方</td></tr>
+    <tr><td class="tone-mark">แ–</td><td>aee</td><td class="tone-mark">แม่</td><td>媽媽</td><td>前方</td></tr>
+    <tr><td class="tone-mark">โ–</td><td>oo</td><td class="tone-mark">โต</td><td>大</td><td>前方</td></tr>
+    <tr><td class="tone-mark">–อ / –อ</td><td>or</td><td class="tone-mark">กอ</td><td>（字母名）</td><td>後方</td></tr>
+    <tr><td class="tone-mark">เ–อ</td><td>ooe</td><td class="tone-mark">เกอ</td><td>（音節）</td><td>前+後</td></tr>
+  </table>
+
+  <!-- 複合母音 -->
+  <h3 style="color:var(--deep-red);margin:1.5rem 0 0.8rem;font-size:1.05rem;">🟣 複合母音（Diphthongs）</h3>
+  <table class="tone-table">
+    <tr><th>符號</th><th>發音</th><th>例字</th><th>意思</th></tr>
+    <tr><td class="tone-mark">เ–ีย</td><td>ia</td><td class="tone-mark">เบีย</td><td>啤酒</td></tr>
+    <tr><td class="tone-mark">เ–ือ</td><td>uea</td><td class="tone-mark">เมือง</td><td>城市</td></tr>
+    <tr><td class="tone-mark">–ัว / –ว</td><td>ua</td><td class="tone-mark">วัว</td><td>牛</td></tr>
+    <tr><td class="tone-mark">เ–า</td><td>ao</td><td class="tone-mark">เขา</td><td>他/她</td></tr>
+    <tr><td class="tone-mark">–าย</td><td>aai</td><td class="tone-mark">ขาย</td><td>賣</td></tr>
+    <tr><td class="tone-mark">–อย</td><td>oi</td><td class="tone-mark">น้อย</td><td>少</td></tr>
+    <tr><td class="tone-mark">–าว</td><td>aao</td><td class="tone-mark">ข้าว</td><td>米飯</td></tr>
+    <tr><td class="tone-mark">–ิว</td><td>io</td><td class="tone-mark">หิว</td><td>餓</td></tr>
+  </table>
+
+  <!-- 聲調 -->
+  <h3 style="color:var(--deep-red);margin:1.5rem 0 0.8rem;font-size:1.05rem;">📌 五個聲調</h3>
+  <table class="tone-table">
+    <tr><th>聲調</th><th>符號</th><th>描述</th><th>例子</th><th>記憶法</th></tr>
+    <tr><td>中平調</td><td class="tone-mark">—</td><td>平穩中音，無符號</td><td class="tone-mark">กา</td><td>平靜說「啊～」</td></tr>
+    <tr><td>低調</td><td class="tone-mark">่</td><td>低平音</td><td class="tone-mark">ก่า</td><td>懶洋洋地說</td></tr>
+    <tr><td>降調</td><td class="tone-mark">้</td><td>從高降下</td><td class="tone-mark">ก้า</td><td>驚訝「啊↘」</td></tr>
+    <tr><td>高調</td><td class="tone-mark">๊</td><td>高而平</td><td class="tone-mark">ก๊า</td><td>尖聲「啊！」</td></tr>
+    <tr><td>升調</td><td class="tone-mark">๋</td><td>從低升高</td><td class="tone-mark">ก๋า</td><td>疑問「啊↗」</td></tr>
+  </table>
+
+  <h3 style="color:var(--deep-red);margin:1.5rem 0 0.8rem;font-size:1.05rem;">📌 聲調決定規則 + 記憶口訣</h3>
+  <div style="background:white;border:2px solid var(--gold);border-radius:12px;padding:1.2rem;margin-bottom:1rem;">
+    <div style="font-size:0.9rem;color:var(--mid);line-height:1.9;">
+      🧠 <strong>口訣：「高組愛升、低組 ้ 反高、其他照牌理出牌」</strong><br>
+      → 中組最乖：無符號就是中調<br>
+      → 高組最傲：連無符號都要升調<br>
+      → 低組最調皮：加了 ้ 反而變高調
+    </div>
+  </div>
+  <table class="tone-table">
+    <tr><th>子音組</th><th>無符號</th><th>่ mai ek</th><th>้ mai tho</th></tr>
+    <tr><td>🔴 中組</td><td>中平調</td><td>低調</td><td>降調</td></tr>
+    <tr><td>🟡 高組</td><td><strong style="color:var(--deep-red)">升調 ⬆</strong></td><td>低調</td><td>降調</td></tr>
+    <tr><td>🟢 低組</td><td>中平調</td><td>降調</td><td><strong style="color:var(--deep-red)">高調 ⬆</strong></td></tr>
+  </table>
+</div>
+
+<!-- 學習清單 -->
+<div class="panel" id="panel-checklist">
+  <div class="section-title">學習清單</div>
+  <div class="section-sub">點擊每一項來標記完成，追蹤你的學習進度</div>
+  <div class="checklist" id="checklistEl"></div>
+</div>
+
+<!-- 拼音練習 -->
+<div class="panel" id="panel-quiz">
+  <div class="section-title">拼音練習</div>
+  <div class="section-sub">看泰文字母，選出正確的羅馬拼音</div>
+  <div class="quiz-card">
+    <div class="quiz-question">這個泰文字母的羅馬拼音是？</div>
+    <div class="quiz-thai" id="quizChar">ก</div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <button class="quiz-next" id="quizNext" onclick="nextQuestion()">下一題 →</button>
+    <div class="quiz-score" id="quizScore"></div>
+  </div>
+</div>
+
+<!-- 學習資源 -->
+<div class="panel" id="panel-resources">
+  <div class="section-title">推薦學習資源</div>
+  <div class="section-sub">結合多種媒介，加速拼音記憶</div>
+  <div class="resources-grid">
+    <div class="resource-card">
+      <div class="resource-icon">📱</div>
+      <h4>Ling App</h4>
+      <p>有系統的泰語課程，包含字母、拼音練習與聲調訓練，適合初學者每日使用。</p>
+      <span class="resource-type">App</span>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">🎥</div>
+      <h4>YouTube: Learn Thai with Mod</h4>
+      <p>專為初學者設計的泰文字母教學影片，有母語者示範發音，聲調解說清晰。</p>
+      <span class="resource-type">影片</span>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">📖</div>
+      <h4>Thai Alphabet Workbook</h4>
+      <p>實體練習冊，透過書寫記憶字形，每個字母搭配記憶圖像與例詞。</p>
+      <span class="resource-type">書籍</span>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">🃏</div>
+      <h4>Anki 字母牌組</h4>
+      <p>在 Anki 搜尋「Thai Alphabet」下載社群牌組，用間隔重複法高效記憶 44 個子音。</p>
+      <span class="resource-type">記憶卡</span>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">🔊</div>
+      <h4>Forvo 泰語發音</h4>
+      <p>母語者錄製的真實發音資料庫，輸入任何泰文詞彙即可聽到正確聲調。</p>
+      <span class="resource-type">網站</span>
+    </div>
+    <div class="resource-card">
+      <div class="resource-icon">✍️</div>
+      <h4>每日書寫練習</h4>
+      <p>建議每天手寫 5 個字母各 10 遍。研究顯示手寫比打字更能加深記憶印象。</p>
+      <span class="resource-type">自主練習</span>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// Data
+const consonants = {
+  mid: [
+    {thai:'ก',roman:'g/k',zh:'雞',cls:'中組'},{thai:'จ',roman:'j',zh:'船',cls:'中組'},
+    {thai:'ด',roman:'d',zh:'小孩',cls:'中組'},{thai:'ต',roman:'t',zh:'龜',cls:'中組'},
+    {thai:'บ',roman:'b',zh:'葉子',cls:'中組'},{thai:'ป',roman:'p',zh:'魚',cls:'中組'},
+    {thai:'อ',roman:'(無音)',zh:'桶子',cls:'中組'},{thai:'ฎ',roman:'d',zh:'大鼓',cls:'中組'},
+    {thai:'ฏ',roman:'t',zh:'陀螺',cls:'中組'}
+  ],
+  high: [
+    {thai:'ข',roman:'kh',zh:'瓶子',cls:'高組'},{thai:'ฃ',roman:'kh',zh:'刀子',cls:'高組'},
+    {thai:'ฉ',roman:'ch',zh:'盤子',cls:'高組'},{thai:'ฐ',roman:'th',zh:'底座',cls:'高組'},
+    {thai:'ถ',roman:'th',zh:'袋子',cls:'高組'},{thai:'ผ',roman:'ph',zh:'蜜蜂',cls:'高組'},
+    {thai:'ฝ',roman:'f',zh:'蓋子',cls:'高組'},{thai:'ศ',roman:'s',zh:'亭子',cls:'高組'},
+    {thai:'ษ',roman:'s',zh:'隱士',cls:'高組'},{thai:'ส',roman:'s',zh:'老虎',cls:'高組'},
+    {thai:'ห',roman:'h',zh:'箱子',cls:'高組'}
+  ],
+  low: [
+    {thai:'ค',roman:'kh',zh:'水牛',cls:'低組'},{thai:'ฅ',roman:'kh',zh:'人',cls:'低組'},
+    {thai:'ฆ',roman:'kh',zh:'鐘',cls:'低組'},{thai:'ง',roman:'ng',zh:'蛇',cls:'低組'},
+    {thai:'ช',roman:'ch',zh:'象',cls:'低組'},{thai:'ซ',roman:'s',zh:'鎖鏈',cls:'低組'},
+    {thai:'ญ',roman:'y',zh:'女性',cls:'低組'},{thai:'ฑ',roman:'th',zh:'老婆婆',cls:'低組'},
+    {thai:'ฒ',roman:'th',zh:'老人',cls:'低組'},{thai:'ณ',roman:'n',zh:'出家人',cls:'低組'},
+    {thai:'ท',roman:'th',zh:'旗子',cls:'低組'},{thai:'ธ',roman:'th',zh:'旗幟',cls:'低組'},
+    {thai:'น',roman:'n',zh:'老鼠',cls:'低組'},{thai:'พ',roman:'ph',zh:'亭子',cls:'低組'},
+    {thai:'ฟ',roman:'f',zh:'牙齒',cls:'低組'},{thai:'ภ',roman:'ph',zh:'山',cls:'低組'},
+    {thai:'ม',roman:'m',zh:'馬',cls:'低組'},{thai:'ย',roman:'y',zh:'巨人',cls:'低組'},
+    {thai:'ร',roman:'r',zh:'船',cls:'低組'},{thai:'ล',roman:'l',zh:'猴子',cls:'低組'},
+    {thai:'ว',roman:'w',zh:'戒指',cls:'低組'},{thai:'ฬ',roman:'l',zh:'風箏',cls:'低組'},
+    {thai:'ฮ',roman:'h',zh:'梟鴞',cls:'低組'},{thai:'ฯ',roman:'—',zh:'省略號',cls:'低組'}
+  ]
+};
+
+const checklist = [
+  {text:'認識泰語字母的3個組別（高、中、低）',detail:'了解聲調組別是學習聲調的基礎',week:'第1週'},
+  {text:'學會中組9個子音的形狀與發音',detail:'ก จ ด ต บ ป อ ฎ ฏ',week:'第1週'},
+  {text:'學會高組11個子音的形狀與發音',detail:'ข ฉ ถ ผ ฝ ศ ษ ส ห 等',week:'第2週'},
+  {text:'學會低組前12個子音',detail:'ค ง ช ซ ญ ณ ท ธ น พ ฟ ภ',week:'第3週'},
+  {text:'學會低組後12個子音',detail:'ม ย ร ล ว ฬ ฮ 等',week:'第4週'},
+  {text:'掌握短母音：a, i, u, e, o',detail:'能辨識這5個短母音的書寫位置',week:'第5週'},
+  {text:'掌握長母音：aa, ii, uu, ee, oo',detail:'理解短長母音的音長差異',week:'第5週'},
+  {text:'學習複合母音（雙元音）',detail:'เอา เอีย เอือ 等複合母音',week:'第6週'},
+  {text:'理解5個聲調的音高輪廓',detail:'中、低、降、高、升調的發音練習',week:'第7週'},
+  {text:'記住中組子音的聲調規則',detail:'無符號=中調，่=低調，้=降調',week:'第7週'},
+  {text:'記住高組子音的聲調規則',detail:'無符號=升調，่=低調，้=降調',week:'第8週'},
+  {text:'記住低組子音的聲調規則',detail:'無符號=中調，่=降調，้=高調',week:'第8週'},
+  {text:'能拼讀開音節詞彙（CV結構）',detail:'例：กา（烏鴉）、มา（來）',week:'第9週'},
+  {text:'能拼讀閉音節詞彙（CVC結構）',detail:'例：กิน（吃）、นัก（學生）',week:'第10週'},
+  {text:'練習閱讀10個常見標誌/招牌',detail:'餐廳、廁所、出口等日常標誌',week:'第11週'},
+  {text:'能不查表拼讀50個常用詞彙',detail:'數字、顏色、基本動詞、食物名稱',week:'第12週'},
+];
+
+// State
+let learned = JSON.parse(localStorage.getItem('thaiLearned') || '{}');
+let checks = JSON.parse(localStorage.getItem('thaiChecks') || '{}');
+let quizScore = {correct:0, total:0};
+let currentQ = null;
+let answered = false;
+
+function saveState() {
+  try { localStorage.setItem('thaiLearned', JSON.stringify(learned)); } catch(e){}
+  try { localStorage.setItem('thaiChecks', JSON.stringify(checks)); } catch(e){}
+}
+
+// Nav
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  const idx = ['overview','alphabet','vowels','checklist','quiz','resources'].indexOf(id);
+  document.querySelectorAll('nav button')[idx].classList.add('active');
+  if (id === 'quiz') loadQuiz();
+}
+
+// Alphabet grids
+function renderGrid(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  items.forEach((c, i) => {
+    const key = containerId + i;
+    const div = document.createElement('div');
+    div.className = 'alpha-card' + (learned[key] ? ' learned' : '');
+    div.innerHTML = `<div class="alpha-thai">${c.thai}</div><div class="alpha-roman">${c.roman}</div><div class="alpha-zh">${c.zh}</div><div class="alpha-class">${c.cls}</div>`;
+    div.onclick = () => {
+      learned[key] = !learned[key];
+      div.classList.toggle('learned', learned[key]);
+      saveState();
+      updateProgress();
+    };
+    el.appendChild(div);
+  });
+}
+
+// Checklist
+function renderChecklist() {
+  const el = document.getElementById('checklistEl');
+  el.innerHTML = '';
+  checklist.forEach((item, i) => {
+    const done = !!checks[i];
+    const div = document.createElement('div');
+    div.className = 'check-item' + (done ? ' done' : '');
+    div.innerHTML = `<div class="check-box">${done ? '✓' : ''}</div><div class="check-text"><strong>${item.text}</strong><span>${item.detail}</span></div><span class="week-label">${item.week}</span>`;
+    div.onclick = () => {
+      checks[i] = !checks[i];
+      saveState();
+      renderChecklist();
+      updateProgress();
+    };
+    el.appendChild(div);
+  });
+}
+
+// Progress
+function updateProgress() {
+  const total = checklist.length;
+  const done = Object.values(checks).filter(Boolean).length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `完成進度：${pct}%（${done}/${total} 項）`;
+}
+
+// Quiz
+const quizData = [
+  ...consonants.mid.slice(0,6).map(c=>({thai:c.thai, answer:c.roman})),
+  ...consonants.high.slice(0,5).map(c=>({thai:c.thai, answer:c.roman})),
+  ...consonants.low.slice(0,6).map(c=>({thai:c.thai, answer:c.roman})),
+];
+
+function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+
+function loadQuiz() {
+  const pool = shuffle([...quizData]);
+  currentQ = pool[Math.floor(Math.random() * pool.length)];
+  document.getElementById('quizChar').textContent = currentQ.thai;
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizNext').style.display = 'none';
+  answered = false;
+
+  // Generate 4 options
+  let options = [currentQ.answer];
+  const others = quizData.filter(q => q.answer !== currentQ.answer).map(q => q.answer);
+  const unique = [...new Set(others)];
+  while (options.length < 4 && unique.length) {
+    const pick = unique.splice(Math.floor(Math.random() * unique.length), 1)[0];
+    options.push(pick);
+  }
+  shuffle(options);
+
+  const optEl = document.getElementById('quizOptions');
+  optEl.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(opt, btn);
+    optEl.appendChild(btn);
+  });
+
+  updateQuizScore();
+}
+
+function checkAnswer(opt, btn) {
+  if (answered) return;
+  answered = true;
+  quizScore.total++;
+  document.querySelectorAll('.quiz-opt').forEach(b => {
+    if (b.textContent === currentQ.answer) b.classList.add('correct');
+  });
+  if (opt === currentQ.answer) {
+    quizScore.correct++;
+    document.getElementById('quizFeedback').textContent = '✓ 答對了！';
+    document.getElementById('quizFeedback').style.color = 'var(--green)';
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('quizFeedback').textContent = `✗ 正確答案是：${currentQ.answer}`;
+    document.getElementById('quizFeedback').style.color = '#c0392b';
+  }
+  document.getElementById('quizNext').style.display = 'inline-block';
+  updateQuizScore();
+}
+
+function nextQuestion() { loadQuiz(); }
+
+function updateQuizScore() {
+  if (quizScore.total > 0) {
+    const pct = Math.round((quizScore.correct / quizScore.total) * 100);
+    document.getElementById('quizScore').textContent = `本次得分：${quizScore.correct}/${quizScore.total}（${pct}%）`;
+  }
+}
+
+// Init
+renderGrid('grid-mid', consonants.mid);
+renderGrid('grid-high', consonants.high);
+renderGrid('grid-low', consonants.low);
+renderChecklist();
+updateProgress();
+</script>
+</body>
+</html>
