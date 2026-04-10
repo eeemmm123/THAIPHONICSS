@@ -676,6 +676,7 @@
     <button class="mode-btn" onclick="setMode('zh2thai')" id="mode-zh2thai">🇨🇳→🇹🇭 中文選泰文<br><small>看中文選單字</small></button>
     <button class="mode-btn" onclick="setMode('tone')" id="mode-tone">🎵 聲調辨別<br><small>同字不同調</small></button>
     <button class="mode-btn" onclick="setMode('build')" id="mode-build">🧩 拼音組合<br><small>組合子音＋母音</small></button>
+    <button class="mode-btn" onclick="setMode('vowelgame')" id="mode-vowelgame">👂 母音聽辨<br><small>聽發音選母音</small></button>
   </div>
 
   <div class="quiz-card" id="quizCard">
@@ -1028,6 +1029,7 @@ function loadQuiz() {
   else if (quizMode === 'zh2thai') loadZh2ThaiQuiz();
   else if (quizMode === 'tone') loadToneQuiz();
   else if (quizMode === 'build') loadBuildQuiz();
+  else if (quizMode === 'vowelgame') loadVowelGame();
 }
 
 // ── Mode 1: Basic (consonant → romaji) ───────────────
@@ -1230,6 +1232,104 @@ function renderVocab(cat) {
     card.onclick = () => speak(item.thai);
     grid.appendChild(card);
   });
+}
+
+
+// ── Mode 6: Vowel listening game ─────────────────────
+const vowelGameData = [
+  // short vowels
+  {symbol:'–ะ', sound:'กะ', roman:'a', type:'短母音', desc:'短 a 音'},
+  {symbol:'–ิ',  sound:'กิน', roman:'i', type:'短母音', desc:'短 i 音'},
+  {symbol:'–ึ',  sound:'กึ่ง', roman:'ue', type:'短母音', desc:'短 ue 音'},
+  {symbol:'–ุ',  sound:'กุ้ง', roman:'u', type:'短母音', desc:'短 u 音'},
+  {symbol:'เ–ะ', sound:'เกะ', roman:'e', type:'短母音', desc:'短 e 音'},
+  {symbol:'แ–ะ', sound:'แกะ', roman:'ae', type:'短母音', desc:'短 ae 音'},
+  {symbol:'โ–ะ', sound:'โต๊ะ', roman:'o', type:'短母音', desc:'短 o 音'},
+  {symbol:'เ–าะ',sound:'เกาะ', roman:'or', type:'短母音', desc:'短 or 音'},
+  // long vowels
+  {symbol:'–า',  sound:'กา',  roman:'aa', type:'長母音', desc:'長 aa 音'},
+  {symbol:'–ี',  sound:'ดี',  roman:'ii', type:'長母音', desc:'長 ii 音'},
+  {symbol:'–ู',  sound:'รู',  roman:'uu', type:'長母音', desc:'長 uu 音'},
+  {symbol:'เ–',  sound:'เก',  roman:'ee', type:'長母音', desc:'長 ee 音'},
+  {symbol:'แ–',  sound:'แม่', roman:'aee', type:'長母音', desc:'長 aee 音'},
+  {symbol:'โ–',  sound:'โต',  roman:'oo', type:'長母音', desc:'長 oo 音'},
+  // diphthongs
+  {symbol:'เ–ีย', sound:'เบีย', roman:'ia', type:'複合母音', desc:'ia 雙元音'},
+  {symbol:'เ–า',  sound:'เขา', roman:'ao', type:'複合母音', desc:'ao 雙元音'},
+  {symbol:'–าว',  sound:'ข้าว', roman:'aao', type:'複合母音', desc:'aao 雙元音'},
+  {symbol:'–าย',  sound:'ขาย', roman:'aai', type:'複合母音', desc:'aai 雙元音'},
+];
+
+let vowelGameQ = null;
+let vowelStreak = 0;
+let vowelBest = parseInt(localStorage.getItem('vowelBest') || '0');
+
+function loadVowelGame() {
+  answered = false;
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizNext').style.display = 'none';
+
+  document.getElementById('quizQuestion').textContent = '仔細聽發音，選出對應的母音符號';
+  document.getElementById('quizHint').textContent = '🔊 點喇叭重播 · 連續答對紀錄：' + vowelStreak + '（最高：' + vowelBest + '）';
+  document.getElementById('quizChar').style.fontSize = '3rem';
+  document.getElementById('quizChar').style.cursor = 'pointer';
+  document.getElementById('quizChar').textContent = '🔊';
+  document.getElementById('quizChar').onclick = () => speak(vowelGameQ.sound);
+
+  const pool = shuffle([...vowelGameData]);
+  vowelGameQ = pool[0];
+  setTimeout(() => speak(vowelGameQ.sound), 400);
+
+  // 4 options: correct + 3 random wrong
+  const wrongs = shuffle(pool.slice(1)).slice(0, 3);
+  const opts = shuffle([vowelGameQ, ...wrongs]);
+
+  const el = document.getElementById('quizOptions');
+  el.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.style.fontFamily = "'Sarabun', sans-serif";
+    btn.style.fontSize = '1.1rem';
+    btn.style.lineHeight = '1.4';
+    btn.innerHTML = `<span style="font-size:1.3rem">${opt.symbol}</span><br><small style="font-size:0.7rem;color:#999">${opt.roman}</small>`;
+    btn.onclick = () => checkVowelAnswer(opt, btn);
+    el.appendChild(btn);
+  });
+
+  updateQuizScore();
+}
+
+function checkVowelAnswer(opt, btn) {
+  if (answered) return;
+  answered = true;
+  quizScore.total++;
+  speak(vowelGameQ.sound);
+
+  document.querySelectorAll('.quiz-opt').forEach(b => {
+    const sym = b.querySelector('span') ? b.querySelector('span').textContent : '';
+    if (sym === vowelGameQ.symbol) b.classList.add('correct');
+  });
+
+  const isCorrect = opt.symbol === vowelGameQ.symbol;
+  if (isCorrect) {
+    quizScore.correct++;
+    vowelStreak++;
+    if (vowelStreak > vowelBest) {
+      vowelBest = vowelStreak;
+      try { localStorage.setItem('vowelBest', vowelBest); } catch(e){}
+    }
+    document.getElementById('quizFeedback').textContent = '✓ 答對！連續 ' + vowelStreak + ' 題 🔥';
+    document.getElementById('quizFeedback').style.color = 'var(--green)';
+  } else {
+    btn.classList.add('wrong');
+    vowelStreak = 0;
+    document.getElementById('quizFeedback').textContent = '✗ 正確是：' + vowelGameQ.symbol + '（' + vowelGameQ.desc + '）';
+    document.getElementById('quizFeedback').style.color = '#c0392b';
+  }
+  document.getElementById('quizHint').textContent = '🔊 點喇叭重播 · 連續答對：' + vowelStreak + '（最高：' + vowelBest + '）';
+  document.getElementById('quizNext').style.display = 'inline-block';
+  updateQuizScore();
 }
 
 // Init
