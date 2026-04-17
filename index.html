@@ -1237,27 +1237,27 @@ function renderVocab(cat) {
 
 // ── Mode 6: Vowel listening game ─────────────────────
 const vowelGameData = [
-  // short vowels
-  {symbol:'–ะ', sound:'กะ', roman:'a', type:'短母音', desc:'短 a 音'},
-  {symbol:'–ิ',  sound:'กิน', roman:'i', type:'短母音', desc:'短 i 音'},
-  {symbol:'–ึ',  sound:'กึ่ง', roman:'ue', type:'短母音', desc:'短 ue 音'},
-  {symbol:'–ุ',  sound:'กุ้ง', roman:'u', type:'短母音', desc:'短 u 音'},
-  {symbol:'เ–ะ', sound:'เกะ', roman:'e', type:'短母音', desc:'短 e 音'},
-  {symbol:'แ–ะ', sound:'แกะ', roman:'ae', type:'短母音', desc:'短 ae 音'},
-  {symbol:'โ–ะ', sound:'โต๊ะ', roman:'o', type:'短母音', desc:'短 o 音'},
-  {symbol:'เ–าะ',sound:'เกาะ', roman:'or', type:'短母音', desc:'短 or 音'},
+  // short vowels — sound = pure vowel using อ as neutral base
+  {symbol:'–ะ',  sound:'อะ',  roman:'a',   type:'短母音', desc:'短 a 音'},
+  {symbol:'–ิ',   sound:'อิ',  roman:'i',   type:'短母音', desc:'短 i 音'},
+  {symbol:'–ึ',   sound:'อึ',  roman:'ue',  type:'短母音', desc:'短 ue 音'},
+  {symbol:'–ุ',   sound:'อุ',  roman:'u',   type:'短母音', desc:'短 u 音'},
+  {symbol:'เ–ะ',  sound:'เอะ', roman:'e',   type:'短母音', desc:'短 e 音'},
+  {symbol:'แ–ะ',  sound:'แอะ', roman:'ae',  type:'短母音', desc:'短 ae 音'},
+  {symbol:'โ–ะ',  sound:'โอะ', roman:'o',   type:'短母音', desc:'短 o 音'},
+  {symbol:'เ–าะ', sound:'เอาะ',roman:'or',  type:'短母音', desc:'短 or 音'},
   // long vowels
-  {symbol:'–า',  sound:'กา',  roman:'aa', type:'長母音', desc:'長 aa 音'},
-  {symbol:'–ี',  sound:'ดี',  roman:'ii', type:'長母音', desc:'長 ii 音'},
-  {symbol:'–ู',  sound:'รู',  roman:'uu', type:'長母音', desc:'長 uu 音'},
-  {symbol:'เ–',  sound:'เก',  roman:'ee', type:'長母音', desc:'長 ee 音'},
-  {symbol:'แ–',  sound:'แม่', roman:'aee', type:'長母音', desc:'長 aee 音'},
-  {symbol:'โ–',  sound:'โต',  roman:'oo', type:'長母音', desc:'長 oo 音'},
+  {symbol:'–า',   sound:'อา',  roman:'aa',  type:'長母音', desc:'長 aa 音'},
+  {symbol:'–ี',   sound:'อี',  roman:'ii',  type:'長母音', desc:'長 ii 音'},
+  {symbol:'–ู',   sound:'อู',  roman:'uu',  type:'長母音', desc:'長 uu 音'},
+  {symbol:'เ–',   sound:'เอ',  roman:'ee',  type:'長母音', desc:'長 ee 音'},
+  {symbol:'แ–',   sound:'แอ',  roman:'aee', type:'長母音', desc:'長 aee 音'},
+  {symbol:'โ–',   sound:'โอ',  roman:'oo',  type:'長母音', desc:'長 oo 音'},
   // diphthongs
-  {symbol:'เ–ีย', sound:'เบีย', roman:'ia', type:'複合母音', desc:'ia 雙元音'},
-  {symbol:'เ–า',  sound:'เขา', roman:'ao', type:'複合母音', desc:'ao 雙元音'},
-  {symbol:'–าว',  sound:'ข้าว', roman:'aao', type:'複合母音', desc:'aao 雙元音'},
-  {symbol:'–าย',  sound:'ขาย', roman:'aai', type:'複合母音', desc:'aai 雙元音'},
+  {symbol:'เ–ีย',  sound:'เอีย', roman:'ia',  type:'複合母音', desc:'ia 雙元音'},
+  {symbol:'เ–า',   sound:'เอา',  roman:'ao',  type:'複合母音', desc:'ao 雙元音'},
+  {symbol:'–าว',   sound:'อาว',  roman:'aao', type:'複合母音', desc:'aao 雙元音'},
+  {symbol:'–าย',   sound:'อาย',  roman:'aai', type:'複合母音', desc:'aai 雙元音'},
 ];
 
 let vowelGameQ = null;
